@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.johnxb.questionnaire.dao.QuestionnaireMapper">
-  <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.Questionnaire">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="create_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="classification_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="creator_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="visible" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="update_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="template" javaType="java.lang.Boolean" jdbcType="BIT" />
-    </constructor>
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.Questionnaire">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="classificationId" column="classification_id"/>
+        <result property="createAt" column="create_at"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="visible" column="visible"/>
+        <result property="updateAt" column="update_at"/>
+        <result property="template" column="template"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from questionnaire
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into questionnaire (title, create_at, status, 
-      description, classification_id, creator_id, 
-      visible, update_at, template
-      )
-    values (#{title,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{classificationId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}, 
-      #{visible,jdbcType=BIT}, #{updateAt,jdbcType=TIMESTAMP}, #{template,jdbcType=BIT}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
+    <insert id="insert" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into questionnaire (title, create_at, status,
+        description, classification_id, creator_id,
+        visible, update_at, template
+        )
+        values (#{title,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+        #{description,jdbcType=VARCHAR}, #{classificationId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER},
+        #{visible,jdbcType=BIT}, #{updateAt,jdbcType=TIMESTAMP}, #{template,jdbcType=BIT}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
     update questionnaire
     set title = #{title,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -45,15 +43,23 @@
       template = #{template,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, title, create_at, status, description, classification_id, creator_id, 
     visible, update_at, template
     from questionnaire
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, title, create_at, status, description, classification_id, creator_id, 
     visible, update_at, template
     from questionnaire
   </select>
+
+    <select id="selectCountByClassificationId" resultType="java.lang.Integer">
+        select COUNT(id)
+        from questionnaire
+        where classification_id = #{classification_id}
+        and visible = 1
+        and template = 0
+    </select>
 </mapper>

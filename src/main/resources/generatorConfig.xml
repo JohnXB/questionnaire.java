@@ -7,10 +7,8 @@
 
     <!--id:必选，上下文id，用于在生成错误时提示-->
     <context id="mysql" targetRuntime="MyBatis3Simple">
-
         <!-- 生成的Java文件的编码 -->
         <property name="javaFileEncoding" value="UTF-8"/>
-
         <!-- 对注释进行控制 -->
         <commentGenerator>
             <!-- suppressDate是去掉生成日期那行注释 -->
@@ -18,7 +16,6 @@
             <!-- suppressAllComments是去掉所有的注解 -->
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
-
         <!--jdbc的数据库连接 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"

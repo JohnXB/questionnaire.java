@@ -12,5 +12,7 @@ public interface ClassificationMapper {
 
     List<Classification> selectAll();
 
+    List<Classification> selectAllVisible();
+
     int updateByPrimaryKey(Classification record);
 }
