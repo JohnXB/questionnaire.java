@@ -43,4 +43,8 @@ public class ClassificationServiceImpl implements ClassificationService {
         return this.questionnaireMapper.selectCountByClassificationId(classification_id);
     }
 
+    //修改分类信息
+    public boolean changeStatus(Classification classification) {
+        return this.classificationMapper.updateStatus(classification) > 0;
+    }
 }

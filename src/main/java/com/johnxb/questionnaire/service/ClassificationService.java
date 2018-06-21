@@ -16,4 +16,7 @@ public interface ClassificationService {
 
     //获取分类 问卷数
     int selectCountByClassificationId(int classification_id);
+
+    //修改分类信息
+    boolean changeStatus(Classification classification);
 }

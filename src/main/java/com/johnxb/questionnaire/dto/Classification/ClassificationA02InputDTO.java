@@ -2,10 +2,13 @@ package com.johnxb.questionnaire.dto.Classification;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+
 public class ClassificationA02InputDTO {
     /**
      * 分类ID
      */
+    @NotNull(message = "分类id不能为空")
     private Integer classificationId;
 
 

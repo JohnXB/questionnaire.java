@@ -1,6 +1,9 @@
 package com.johnxb.questionnaire.dao;
 
 import com.johnxb.questionnaire.entity.Classification;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
+
 import java.util.List;
 
 public interface ClassificationMapper {
@@ -14,5 +17,5 @@ public interface ClassificationMapper {
 
     List<Classification> selectAllVisible();
 
-    int updateByPrimaryKey(Classification record);
+    int updateStatus(Classification classification);
 }

@@ -1,9 +1,6 @@
 package com.johnxb.questionnaire.api;
 
-import com.johnxb.questionnaire.dto.Classification.ClassificationA01DTO;
-import com.johnxb.questionnaire.dto.Classification.ClassificationA02DTO;
-import com.johnxb.questionnaire.dto.Classification.ClassificationA02InputDTO;
-import com.johnxb.questionnaire.dto.Classification.ClassificationA03DTO;
+import com.johnxb.questionnaire.dto.Classification.*;
 import com.johnxb.questionnaire.entity.Classification;
 import com.johnxb.questionnaire.service.ClassificationService;
 import com.johnxb.questionnaire.utils.BeanMapper;
@@ -63,6 +60,17 @@ public class ClassificationController {
         List<Classification> classificationList = this.classificationService.getAllClassificationByAdmin();
         classificationA03DTOList = BeanMapper.mapList(classificationList, ClassificationA03DTO.class);
         jsonResult.setData(classificationA03DTOList);
+        return jsonResult;
+    }
+    @ApiOperation("修改分类信息(管理员)")
+    @RequestMapping(method = RequestMethod.GET, value = "/A04")
+    public JSONResult A04(@Valid ClassificationA04InputDTO input) {
+        JSONResult jsonResult = new JSONResult<>();
+        Classification classification = BeanMapper.map(input,Classification.class);
+
+        this.classificationService.changeStatus(classification);
+
+        jsonResult.setMessage("成功修改分类信息");
         return jsonResult;
     }
 }

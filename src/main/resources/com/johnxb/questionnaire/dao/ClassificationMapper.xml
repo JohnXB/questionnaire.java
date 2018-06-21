@@ -38,4 +38,11 @@
         from classification t
         where visible = 1
     </select>
+    <update id="updateStatus" parameterType="com.johnxb.questionnaire.entity.Classification">
+        update classification
+        set name = #{name,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        visible = #{visible,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
