@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.johnxb.questionnaire.dao.FlywaySchemaHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.FlywaySchemaHistory">
+    <constructor>
+      <idArg column="installed_rank" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="version" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="script" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="checksum" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="installed_by" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="installed_on" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="execution_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="success" javaType="java.lang.Boolean" jdbcType="BIT" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flyway_schema_history
+    where installed_rank = #{installedRank,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.johnxb.questionnaire.entity.FlywaySchemaHistory">
+    insert into flyway_schema_history (installed_rank, version, description, 
+      type, script, checksum, 
+      installed_by, installed_on, execution_time, 
+      success)
+    values (#{installedRank,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{script,jdbcType=VARCHAR}, #{checksum,jdbcType=INTEGER}, 
+      #{installedBy,jdbcType=VARCHAR}, #{installedOn,jdbcType=TIMESTAMP}, #{executionTime,jdbcType=INTEGER}, 
+      #{success,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.FlywaySchemaHistory">
+    update flyway_schema_history
+    set version = #{version,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      script = #{script,jdbcType=VARCHAR},
+      checksum = #{checksum,jdbcType=INTEGER},
+      installed_by = #{installedBy,jdbcType=VARCHAR},
+      installed_on = #{installedOn,jdbcType=TIMESTAMP},
+      execution_time = #{executionTime,jdbcType=INTEGER},
+      success = #{success,jdbcType=BIT}
+    where installed_rank = #{installedRank,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select installed_rank, version, description, type, script, checksum, installed_by, 
+    installed_on, execution_time, success
+    from flyway_schema_history
+    where installed_rank = #{installedRank,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select installed_rank, version, description, type, script, checksum, installed_by, 
+    installed_on, execution_time, success
+    from flyway_schema_history
+  </select>
+</mapper>

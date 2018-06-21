@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.johnxb.questionnaire.dao.QuestionMapper">
+  <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.Question">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="questionnaire_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.johnxb.questionnaire.entity.Question">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into question (type, description, questionnaire_id, 
+      create_at, update_at)
+    values (#{type,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{questionnaireId,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.Question">
+    update question
+    set type = #{type,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      questionnaire_id = #{questionnaireId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, type, description, questionnaire_id, create_at, update_at
+    from question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, type, description, questionnaire_id, create_at, update_at
+    from question
+  </select>
+</mapper>
