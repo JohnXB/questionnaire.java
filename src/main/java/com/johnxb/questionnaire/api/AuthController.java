@@ -33,7 +33,11 @@ public class AuthController {
     public JSONResult Sign_in(@Valid UserLoginInputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
         AuthUser user = BeanMapper.map(input, AuthUser.class);
-        jsonResult.setData(authUserService.signIn(user));
+        String token =authUserService.signIn(user) ;
+        if(token == null){
+            jsonResult.setMessage("用户名或密码错误");
+        }
+        else jsonResult.setData(token);
         return jsonResult;
     }
 

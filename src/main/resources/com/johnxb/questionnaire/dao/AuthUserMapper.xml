@@ -59,6 +59,5 @@
         SELECT *
         FROM auth_user
         WHERE username = #{username,jdbcType=VARCHAR}
-        AND password = #{password,jdbcType=VARCHAR}
     </select>
 </mapper>

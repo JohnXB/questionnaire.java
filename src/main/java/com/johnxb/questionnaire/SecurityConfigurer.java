@@ -1,5 +1,6 @@
 package com.johnxb.questionnaire;
 
+import com.johnxb.questionnaire.secruity.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     // Spring会自动寻找同样类型的具体类注入，这里就是JwtUserDetailsServiceImpl了
     @Autowired
     private UserDetailsService userDetailsService;
+    @Bean
+    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+        return new JwtAuthenticationTokenFilter();
+    }
+
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -50,7 +57,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("**").permitAll()
                 .anyRequest().fullyAuthenticated()
-                .and().csrf().disable();
+                .and().csrf().disable(); httpSecurity
+                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 //                // 除上面外的所有请求全部需要鉴权认证
 //                .anyRequest().authenticated();
 

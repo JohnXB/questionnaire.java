@@ -1,0 +1,1 @@
+alter table auth_user modify column password varchar(255)

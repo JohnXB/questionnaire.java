@@ -15,8 +15,8 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
     private AuthUserService authUserService;
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        AuthUser user = authUserService.findByUserId(Integer.parseInt(id));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AuthUser user = authUserService.findByUserId(Integer.parseInt(username));
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("该用户不存在" ));

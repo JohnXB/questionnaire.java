@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,9 @@ public class AuthUserServiceImpl implements AuthUserService {
             return false;
         }
         user.setAvatar("aaa");
+//        加密
+        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword().trim()));
         user.setCurrentToken(generateToken(user));
         int id = authUserMapper.insert(user);
         userRolesMapper.insertUserRole(user.getId(), 2);
@@ -51,8 +55,17 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     public String signIn(AuthUser user) {
+        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
+        String pass = user.getPassword();
+
         user = authUserMapper.selectBySignIn(user);
-        return generateToken(user);
+        if(user==null){
+            return null;
+        }
+        if(encoder.matches(pass,user.getPassword())){
+            return generateToken(user);
+        }
+        return  null;
     }
 
     String generateToken(AuthUser user) {
@@ -60,8 +73,9 @@ public class AuthUserServiceImpl implements AuthUserService {
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return Jwts.builder()
                 .claim("id", user.getId())   //设置payload的键值对
+                .claim("username", user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
-                .signWith(SignatureAlgorithm.HS256, key) //采用什么算法是可以自己选择的，不一定非要采用HS512
+                .signWith(SignatureAlgorithm.HS512, key) //采用什么算法是可以自己选择的，不一定非要采用HS512
                 .compact();
     }
 
