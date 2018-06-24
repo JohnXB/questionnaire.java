@@ -1,0 +1,1 @@
+alter table auth_user add username varchar(20) not NULL ;

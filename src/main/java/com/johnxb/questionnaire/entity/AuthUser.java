@@ -1,12 +1,13 @@
 package com.johnxb.questionnaire.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class AuthUser {
     private Integer id;
 
     private String name;
-
+    private String username;
     private String mail;
 
     private String password;
@@ -20,6 +21,25 @@ public class AuthUser {
     private String phone;
 
     private String currentToken;
+
+    private List<String> roles;
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     public AuthUser(Integer id, String name, String mail, String password, String avatar, Date registerAt, String gender, String phone, String currentToken) {
         this.id = id;

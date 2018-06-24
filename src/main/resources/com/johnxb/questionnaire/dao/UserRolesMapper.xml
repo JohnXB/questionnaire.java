@@ -2,11 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.johnxb.questionnaire.dao.UserRolesMapper">
   <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.UserRoles">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="role_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-    </constructor>
+    <id property="id" column="id"/>
+    <result property="roleId" column="role_id"/>
+    <result property="userId" column="user_id"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_roles
@@ -34,4 +32,18 @@
     select id, user_id, role_id
     from user_roles
   </select>
+
+  <select id="getRolesByUserId" resultType="java.lang.String">
+    SELECT role_name
+    FROM user_roles ,role
+    WHERE user_id = #{user_id}
+  </select>
+  <insert id="insertUserRole">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO
+    user_roles(user_id,role_id)
+    VALUES (#{user_id},#{role_id})
+  </insert>
 </mapper>

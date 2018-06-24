@@ -8,6 +8,7 @@ import com.johnxb.questionnaire.utils.JSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +52,7 @@ public class ClassificationController {
         jsonResult.setData(classificationA02DTO);
         return jsonResult;
     }
-
+//    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation("获取所有分类(管理员)")
     @RequestMapping(method = RequestMethod.GET, value = "/A03")
     public JSONResult A03() {
@@ -62,6 +63,7 @@ public class ClassificationController {
         jsonResult.setData(classificationA03DTOList);
         return jsonResult;
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation("修改分类信息(管理员)")
     @RequestMapping(method = RequestMethod.GET, value = "/A04")
     public JSONResult A04(@Valid ClassificationA04InputDTO input) {
@@ -73,4 +75,15 @@ public class ClassificationController {
         jsonResult.setMessage("成功修改分类信息");
         return jsonResult;
     }
+//    @ApiOperation("增加分类(管理员)")
+//    @RequestMapping(method = RequestMethod.GET, value = "/A05")
+//    public JSONResult A05(@Valid ClassificationA04InputDTO input) {
+//        JSONResult jsonResult = new JSONResult<>();
+//        Classification classification = BeanMapper.map(input,Classification.class);
+//
+//        this.classificationService.insert(classification);
+//
+//        jsonResult.setMessage("成功增加分类信息");
+//        return jsonResult;
+//    }
 }

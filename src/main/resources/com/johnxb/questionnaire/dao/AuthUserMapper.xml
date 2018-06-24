@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.johnxb.questionnaire.dao.AuthUserMapper">
-  <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.AuthUser">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="mail" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="avatar" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="register_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="gender" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="current_token" javaType="java.lang.String" jdbcType="VARCHAR" />
-    </constructor>
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <resultMap id="BaseResultMap" type="com.johnxb.questionnaire.entity.AuthUser">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mail" column="mail"/>
+        <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
+        <result property="registerAt" column="register_at"/>
+        <result property="gender" column="gender"/>
+        <result property="phone" column="phone"/>
+        <result property="currentToken" column="current_token"/>
+        <result property="username" column="username"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from auth_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.johnxb.questionnaire.entity.AuthUser">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into auth_user (name, mail, password, 
-      avatar, register_at, gender, 
-      phone, current_token)
-    values (#{name,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{avatar,jdbcType=VARCHAR}, #{registerAt,jdbcType=TIMESTAMP}, #{gender,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{currentToken,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.AuthUser">
+    <select id="selectByUsername" resultType="java.lang.String">
+        SELECT username
+        FROM auth_user
+        WHERE username=#{username}
+    </select>
+    <insert id="insert" parameterType="com.johnxb.questionnaire.entity.AuthUser">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into auth_user (name, mail, password,
+        register_at, gender, username,avatar,
+        phone,current_token)
+        values (#{name,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        CURRENT_TIME , #{gender,jdbcType=VARCHAR},
+        #{username,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{currentToken,jdbcType=VARCHAR})
+
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.AuthUser">
     update auth_user
     set name = #{name,jdbcType=VARCHAR},
       mail = #{mail,jdbcType=VARCHAR},
@@ -41,12 +46,12 @@
       current_token = #{currentToken,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, mail, password, avatar, register_at, gender, phone, current_token
     from auth_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, name, mail, password, avatar, register_at, gender, phone, current_token
     from auth_user
   </select>
