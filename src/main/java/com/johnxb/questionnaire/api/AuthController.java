@@ -32,18 +32,19 @@ public class AuthController {
     @PostMapping("sign_in")
     public JSONResult Sign_in(@Valid UserLoginInputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
-
+        AuthUser user = BeanMapper.map(input, AuthUser.class);
+        jsonResult.setData(authUserService.signIn(user));
         return jsonResult;
     }
+
     @ApiOperation(value = "注册", notes = "注册", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PostMapping("sign_up")
     public JSONResult Sign_up(@Valid UserSignUpInputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
-        AuthUser user = BeanMapper.map(input,AuthUser.class);
-        if(authUserService.signUp(user)){
+        AuthUser user = BeanMapper.map(input, AuthUser.class);
+        if (authUserService.signUp(user)) {
             jsonResult.setMessage("注册成功");
-        }
-        else jsonResult.setMessage("注册失败，登录名已存在");
+        } else jsonResult.setMessage("注册失败，登录名已存在");
         return jsonResult;
     }
 }

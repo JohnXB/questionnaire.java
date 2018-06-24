@@ -50,12 +50,15 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     }
 
+    public String signIn(AuthUser user) {
+        user = authUserMapper.selectBySignIn(user);
+        return generateToken(user);
+    }
+
     String generateToken(AuthUser user) {
         byte[] encodedKey = Base64.decodeBase64("secret");
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return Jwts.builder()
-                .claim("username", user.getUsername())   //设置payload的键值对
-                .claim("name", user.getName())
                 .claim("id", user.getId())   //设置payload的键值对
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS256, key) //采用什么算法是可以自己选择的，不一定非要采用HS512

@@ -55,4 +55,10 @@
     select id, name, mail, password, avatar, register_at, gender, phone, current_token
     from auth_user
   </select>
+    <select id="selectBySignIn" resultMap="BaseResultMap">
+        SELECT *
+        FROM auth_user
+        WHERE username = #{username,jdbcType=VARCHAR}
+        AND password = #{password,jdbcType=VARCHAR}
+    </select>
 </mapper>
