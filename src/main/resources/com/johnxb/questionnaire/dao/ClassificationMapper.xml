@@ -9,17 +9,17 @@
         <result property="visible" column="visible"/>
         <result property="createAt" column="create_at"/>
     </resultMap>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from classification
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+    <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+    <!--delete from classification-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</delete>-->
     <insert id="insert" parameterType="com.johnxb.questionnaire.entity.Classification">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into classification (name, create_at, description,
         creator, visible)
-        values (#{name,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
+        values (#{name,jdbcType=VARCHAR}, CURRENT_TIME , #{description,jdbcType=VARCHAR},
         #{creator,jdbcType=INTEGER}, #{visible,jdbcType=BIT})
     </insert>
 

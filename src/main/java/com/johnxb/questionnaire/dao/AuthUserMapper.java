@@ -16,7 +16,8 @@ public interface AuthUserMapper {
     List<AuthUser> selectAll();
 
     int updateByPrimaryKey(AuthUser record);
-    List<String> selectByUsername(@Param("username")String username);
+    List<String> checkByUsername(@Param("username")String username);
+    AuthUser selectByUsername(@Param("username")String usernam);
     AuthUser selectBySignIn(AuthUser user);
 
 }

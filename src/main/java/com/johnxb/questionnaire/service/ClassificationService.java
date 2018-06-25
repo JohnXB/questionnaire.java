@@ -19,4 +19,7 @@ public interface ClassificationService {
 
     //修改分类信息
     boolean changeStatus(Classification classification);
+
+    //    增加分类
+    int addClassification(Classification classification);
 }

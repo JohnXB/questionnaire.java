@@ -1,10 +1,11 @@
 package com.johnxb.questionnaire.dto.Classification;
 
+import com.johnxb.questionnaire.dto.RequestDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-public class ClassificationA02InputDTO {
+public class ClassificationA02InputDTO extends RequestDTO{
     /**
      * 分类ID
      */

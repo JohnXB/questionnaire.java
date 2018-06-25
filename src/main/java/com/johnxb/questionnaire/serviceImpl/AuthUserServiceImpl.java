@@ -31,21 +31,21 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public AuthUser findByUserId(int id) {
-        AuthUser authUser = this.authUserMapper.selectByPrimaryKey(id);
-        authUser.setRoles(userRolesMapper.getRolesByUserId(id));
+    public AuthUser findByUserName(String username) {
+        AuthUser authUser = this.authUserMapper.selectByUsername(username);
+        authUser.setRoles(userRolesMapper.getRolesByUserId(authUser.getId()));
         return authUser;
     }
 
     @Override
     public boolean signUp(AuthUser user) {
-        List<String> usernameList = authUserMapper.selectByUsername(user.getUsername());
+        List<String> usernameList = authUserMapper.checkByUsername(user.getUsername());
         if (usernameList.size() > 0) {
             return false;
         }
         user.setAvatar("aaa");
 //        加密
-        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword().trim()));
         user.setCurrentToken(generateToken(user));
         int id = authUserMapper.insert(user);
@@ -55,27 +55,26 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     public String signIn(AuthUser user) {
-        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String pass = user.getPassword();
 
         user = authUserMapper.selectBySignIn(user);
-        if(user==null){
+        if (user == null) {
             return null;
         }
-        if(encoder.matches(pass,user.getPassword())){
+        if (encoder.matches(pass, user.getPassword())) {
             return generateToken(user);
         }
-        return  null;
+        return null;
     }
 
     String generateToken(AuthUser user) {
-        byte[] encodedKey = Base64.decodeBase64("secret");
-        SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return Jwts.builder()
                 .claim("id", user.getId())   //设置payload的键值对
                 .claim("username", user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
-                .signWith(SignatureAlgorithm.HS512, key) //采用什么算法是可以自己选择的，不一定非要采用HS512
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, "secret") //采用什么算法是可以自己选择的，不一定非要采用HS512
                 .compact();
     }
 

@@ -47,4 +47,8 @@ public class ClassificationServiceImpl implements ClassificationService {
     public boolean changeStatus(Classification classification) {
         return this.classificationMapper.updateStatus(classification) > 0;
     }
+    //    增加分类
+    public int addClassification(Classification classification){
+        return this.classificationMapper.insert(classification);
+    }
 }

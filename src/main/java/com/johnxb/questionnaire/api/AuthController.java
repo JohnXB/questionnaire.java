@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @ApiOperation(value = "用户登录", notes = "用户登录", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping("sign_in")
+    @PostMapping("SignIn")
     public JSONResult Sign_in(@Valid UserLoginInputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
         AuthUser user = BeanMapper.map(input, AuthUser.class);
@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @ApiOperation(value = "注册", notes = "注册", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping("sign_up")
+    @PostMapping("SignUp")
     public JSONResult Sign_up(@Valid UserSignUpInputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
         AuthUser user = BeanMapper.map(input, AuthUser.class);

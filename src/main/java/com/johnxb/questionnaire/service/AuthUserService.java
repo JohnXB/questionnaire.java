@@ -3,7 +3,7 @@ package com.johnxb.questionnaire.service;
 import com.johnxb.questionnaire.entity.AuthUser;
 
 public interface AuthUserService {
-    AuthUser findByUserId(int id);
+    AuthUser findByUserName(String username);
     boolean signUp(AuthUser user);
     String signIn(AuthUser user);
 }

@@ -34,9 +34,10 @@
   </select>
 
   <select id="getRolesByUserId" resultType="java.lang.String">
-    SELECT role_name
-    FROM user_roles ,role
-    WHERE user_id = #{user_id}
+    SELECT r.role_code
+    FROM user_roles u,role r
+    WHERE u.role_id = r.id
+    AND u.user_id = #{user_id}
   </select>
   <insert id="insertUserRole">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">

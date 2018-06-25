@@ -17,7 +17,7 @@
     delete from auth_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <select id="selectByUsername" resultType="java.lang.String">
+    <select id="checkByUsername" resultType="java.lang.String">
         SELECT username
         FROM auth_user
         WHERE username=#{username}
@@ -59,5 +59,10 @@
         SELECT *
         FROM auth_user
         WHERE username = #{username,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        select id, name, mail, password, avatar, register_at, gender, phone, current_token
+        from auth_user
+        where username = #{username}
     </select>
 </mapper>
