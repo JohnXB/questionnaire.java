@@ -9,6 +9,7 @@
         <result property="classificationId" column="classification_id"/>
         <result property="createAt" column="create_at"/>
         <result property="creatorId" column="creator_id"/>
+        <result property="creatorName" column="creator_name"/>
         <result property="visible" column="visible"/>
         <result property="updateAt" column="update_at"/>
         <result property="template" column="template"/>
@@ -25,9 +26,9 @@
         description, classification_id, creator_id,
         visible, update_at, template
         )
-        values (#{title,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+        values (#{title,jdbcType=VARCHAR}, CURRENT_TIME , 1,
         #{description,jdbcType=VARCHAR}, #{classificationId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER},
-        #{visible,jdbcType=BIT}, #{updateAt,jdbcType=TIMESTAMP}, #{template,jdbcType=BIT}
+        1, CURRENT_TIME, #{template,jdbcType=BIT}
         )
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
@@ -61,5 +62,17 @@
         where classification_id = #{classification_id}
         and visible = 1
         and template = 0
+    </select>
+    <select id="seleteByClassificationId" resultMap="BaseResultMap">
+        SELECT ques.id, ques.title, ques.create_at, ques.status, ques.description,auth_user.username creator_name,COUNT(question.id)
+    FROM questionnaire ques,auth_user,question
+    WHERE visible = 1 AND auth_user.id = creator_id
+        <if test="classification_id != null">
+            AND ques.classification_id = #{classification_id}
+        </if>
+        <if test="classification_id == null">
+            AND ques.classification_id is null
+        </if>
+        AND question.questionnaire_id =ques.id
     </select>
 </mapper>

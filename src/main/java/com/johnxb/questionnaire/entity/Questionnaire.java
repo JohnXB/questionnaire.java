@@ -1,6 +1,7 @@
 package com.johnxb.questionnaire.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class Questionnaire {
     private Integer id;
@@ -16,12 +17,13 @@ public class Questionnaire {
     private Integer classificationId;
 
     private Integer creatorId;
-
+    private String creatorName;
     private Boolean visible;
 
     private Date updateAt;
 
     private Boolean template;
+    private List<Question> questions;
 
     public Questionnaire(Integer id, String title, Date createAt, Integer status, String description, Integer classificationId, Integer creatorId, Boolean visible, Date updateAt, Boolean template) {
         this.id = id;
@@ -118,5 +120,21 @@ public class Questionnaire {
 
     public void setTemplate(Boolean template) {
         this.template = template;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

@@ -1,6 +1,9 @@
 package com.johnxb.questionnaire.entity;
 
+import com.johnxb.questionnaire.dto.Questionnaire.Option;
+
 import java.util.Date;
+import java.util.List;
 
 public class Question {
     private Integer id;
@@ -14,6 +17,7 @@ public class Question {
     private Date createAt;
 
     private Date updateAt;
+    private List<QuesOption> options;
 
     public Question(Integer id, Integer type, String description, Integer questionnaireId, Date createAt, Date updateAt) {
         this.id = id;
@@ -74,5 +78,13 @@ public class Question {
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public List<QuesOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<QuesOption> options) {
+        this.options = options;
     }
 }

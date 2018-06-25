@@ -40,4 +40,14 @@
     select id, description, create_at, update_at, question_id
     from ques_option
   </select>
+
+  <insert id="insertByParent" parameterType="com.johnxb.questionnaire.entity.QuesOption">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ques_option (description, create_at, update_at,
+    question_id)
+    values (#{description,jdbcType=VARCHAR}, CURRENT_TIME , CURRENT_TIME ,
+    #{questionId,jdbcType=INTEGER})
+  </insert>
 </mapper>

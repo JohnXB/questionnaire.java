@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @Api(description = "问卷分类Api")
 @RequestMapping("/Classification")
@@ -75,7 +76,7 @@ public class ClassificationController {
     public JSONResult A04(@Valid ClassificationA04InputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
 
-        if(currentUser.isAdmin(input.getToken())){
+        if(!currentUser.isAdmin(input.getToken())){
             jsonResult.setMessage("权限不够");
             return jsonResult;
         }
@@ -90,7 +91,7 @@ public class ClassificationController {
     @RequestMapping(method = RequestMethod.GET, value = "/A05")
     public JSONResult A05(@Valid ClassificationA05InputDTO input) {
         JSONResult jsonResult = new JSONResult<>();
-        if(currentUser.isAdmin(input.getToken())){
+        if(!currentUser.isAdmin(input.getToken())){
             jsonResult.setMessage("权限不够");
             return jsonResult;
         }

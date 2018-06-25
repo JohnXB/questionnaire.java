@@ -1,6 +1,8 @@
 package com.johnxb.questionnaire.dao;
 
 import com.johnxb.questionnaire.entity.QuesOption;
+import com.johnxb.questionnaire.entity.Question;
+
 import java.util.List;
 
 public interface QuesOptionMapper {
@@ -13,4 +15,5 @@ public interface QuesOptionMapper {
     List<QuesOption> selectAll();
 
     int updateByPrimaryKey(QuesOption record);
+    int insertByParent(QuesOption option);
 }

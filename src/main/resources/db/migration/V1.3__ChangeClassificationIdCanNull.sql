@@ -1,0 +1,1 @@
+alter table questionnaire modify column classification_id INTEGER null
