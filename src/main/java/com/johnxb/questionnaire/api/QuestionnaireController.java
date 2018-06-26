@@ -108,7 +108,7 @@ public class QuestionnaireController {
         return jsonResult;
     }
     @ApiOperation("获取用户问卷")
-    @RequestMapping(method = RequestMethod.POST, value = "/A08")
+    @RequestMapping(method = RequestMethod.POST, value = "/A09")
     public JSONResult A09() {
         JSONResult jsonResult = new JSONResult();
         return jsonResult;
