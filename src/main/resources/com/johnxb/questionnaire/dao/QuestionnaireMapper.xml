@@ -31,19 +31,7 @@
         1, CURRENT_TIME, #{template,jdbcType=BIT}
         )
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
-    update questionnaire
-    set title = #{title,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      description = #{description,jdbcType=VARCHAR},
-      classification_id = #{classificationId,jdbcType=INTEGER},
-      creator_id = #{creatorId,jdbcType=INTEGER},
-      visible = #{visible,jdbcType=BIT},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      template = #{template,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, title, create_at, status, description, classification_id, creator_id, 
     visible, update_at, template
@@ -74,5 +62,27 @@
             AND ques.classification_id is null
         </if>
         AND question.questionnaire_id =ques.id
+    </select>
+
+
+    <resultMap id="Questionnaire" type="com.johnxb.questionnaire.entity.Questionnaire">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="classificationId" column="classification_id"/>
+        <result property="createAt" column="create_at"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="creatorName" column="creator_name"/>
+        <result property="visible" column="visible"/>
+        <result property="updateAt" column="update_at"/>
+        <result property="template" column="template"/>
+        <collection property="questions" column="id" select="com.johnxb.questionnaire.dao.QuestionMapper.findByFather"/>
+    </resultMap>
+    <select id="selectById" resultMap="Questionnaire">
+         select id, title, create_at, status, description, classification_id, creator_id,
+    visible, update_at, template
+    from questionnaire
+    where id = #{id}
     </select>
 </mapper>

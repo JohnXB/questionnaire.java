@@ -51,4 +51,19 @@
     values (#{type,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{questionnaireId,jdbcType=INTEGER},
     CURRENT_TIME , CURRENT_TIME )
   </insert>
+
+  <resultMap id="Question" type="com.johnxb.questionnaire.entity.Question">
+    <id property="id" column="id"/>
+    <result property="type" column="type"/>
+    <result property="description" column="description"/>
+    <result property="questionnaireId" column="questionnaire_id"/>
+    <result property="createAt" column="create_at"/>
+    <result property="updateAt" column="update_at"/>
+    <collection property="options" column="id" select="com.johnxb.questionnaire.dao.QuesOptionMapper.findByFather"/>
+  </resultMap>
+  <select id="findByFather"  resultMap="Question">
+    select id, type, description, questionnaire_id, create_at, update_at
+    from question
+    where questionnaire_id = #{id}
+  </select>
 </mapper>

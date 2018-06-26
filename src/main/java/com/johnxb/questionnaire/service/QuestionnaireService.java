@@ -7,4 +7,5 @@ import java.util.List;
 public interface QuestionnaireService {
    List<Questionnaire> getByParentId(Integer classification_id);
    boolean createQuestionnaire(Questionnaire questionnaire,int user_id);
+   Questionnaire getQuestionnaireById(int id);
 }

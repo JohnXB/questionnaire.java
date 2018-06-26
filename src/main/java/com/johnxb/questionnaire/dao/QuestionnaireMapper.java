@@ -19,4 +19,5 @@ public interface QuestionnaireMapper {
     int selectCountByClassificationId(@Param("classification_id") int classification_id);
     //通过分类id获取问卷
     List<Questionnaire> seleteByClassificationId(@Param("classification_id") Integer classification_id);
+    Questionnaire selectById(@Param("id") Integer id);
 }

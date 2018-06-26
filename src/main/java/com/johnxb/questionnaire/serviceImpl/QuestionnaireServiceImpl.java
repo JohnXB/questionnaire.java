@@ -56,4 +56,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             return false;
         }
     }
+
+    public Questionnaire getQuestionnaireById(int id) {
+      return this.questionnaireMapper.selectById(id);
+    }
 }
