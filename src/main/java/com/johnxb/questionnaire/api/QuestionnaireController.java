@@ -4,6 +4,7 @@ import com.johnxb.questionnaire.dto.Questionnaire.*;
 import com.johnxb.questionnaire.dto.RequestDTO;
 import com.johnxb.questionnaire.entity.Question;
 import com.johnxb.questionnaire.entity.Questionnaire;
+import com.johnxb.questionnaire.entity.Record;
 import com.johnxb.questionnaire.service.ClassificationService;
 import com.johnxb.questionnaire.service.ICurrentUser;
 import com.johnxb.questionnaire.service.QuestionnaireService;
@@ -109,8 +110,28 @@ public class QuestionnaireController {
 
     @ApiOperation("填写问卷")
     @RequestMapping(method = RequestMethod.POST, value = "/A07")
-    public JSONResult A07() {
+    public JSONResult A07(@Valid @RequestBody QuestionnaireA07InputDTO input) {
         JSONResult jsonResult = new JSONResult();
+        if (!currentUser.isUser(input.getToken())) {
+            jsonResult.setMessage("该功能需要用户权限！");
+            return jsonResult;
+        }
+        int userId = currentUser.getUserId(input.getToken());
+        List<Record> recordList = new ArrayList<>();
+        for (RecordDTO rd: input.getRecord()) {
+            for (Integer optionId:rd.getOptions()) {
+                Record record = new Record();
+                record.setOptionId(optionId);
+                record.setQuestionId(rd.getQuestion_id());
+                record.setQuestionnaireId(rd.getQuestionnaire_id());
+                record.setUserId(userId);
+                record.setIp("localhost");
+                recordList.add(record);
+            }
+
+        }
+        this.questionnaireService.fillIn(recordList);
+        jsonResult.setMessage("填写成功");
         return jsonResult;
     }
 

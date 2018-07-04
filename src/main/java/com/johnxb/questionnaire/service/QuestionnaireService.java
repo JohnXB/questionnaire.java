@@ -1,6 +1,7 @@
 package com.johnxb.questionnaire.service;
 
 import com.johnxb.questionnaire.entity.Questionnaire;
+import com.johnxb.questionnaire.entity.Record;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface QuestionnaireService {
    String checkQuestionnaire(int id,int user_id,boolean visible);
    String deleteQuestionnaire(int id,int user_id);
    List<Questionnaire> getUserQuestionnaire(int user_id);
+   boolean fillIn(List<Record> recordList);
 }

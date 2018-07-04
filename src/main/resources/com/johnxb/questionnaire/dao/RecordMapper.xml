@@ -46,4 +46,20 @@
     select id, questionnaire_id, question_id, option_id, user_id, create_at, ip
     from record
   </select>
+  <insert id="insertList" parameterType="java.util.List">
+    insert into record (questionnaire_id, question_id, option_id,
+      user_id, create_at, ip
+      )
+    values
+    <foreach collection="list" item="item" index= "index" separator =",">
+      (
+      #{item.questionnaireId},
+      #{item.questionId},
+      #{item.optionId},
+      #{item.userId},
+      CURRENT_TIME ,
+      #{item.ip}
+      )
+    </foreach>
+  </insert>
 </mapper>
