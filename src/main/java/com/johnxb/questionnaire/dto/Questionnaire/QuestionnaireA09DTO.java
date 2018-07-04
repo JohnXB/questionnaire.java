@@ -2,7 +2,7 @@ package com.johnxb.questionnaire.dto.Questionnaire;
 
 import java.util.Date;
 
-public class QuestionnaireA01DTO {
+public class QuestionnaireA09DTO {
     private Integer id;
 
     private String title;
@@ -11,7 +11,8 @@ public class QuestionnaireA01DTO {
 
     private String description;
 
-    private String creatorName;
+    private boolean visible;
+
     private int questionCount;
 
     public int getQuestionCount() {
@@ -21,7 +22,6 @@ public class QuestionnaireA01DTO {
     public void setQuestionCount(int questionCount) {
         this.questionCount = questionCount;
     }
-
     public Integer getId() {
         return id;
     }
@@ -54,12 +54,11 @@ public class QuestionnaireA01DTO {
         this.description = description;
     }
 
-    public String getCreatorName() {
-        return creatorName;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
-
 }

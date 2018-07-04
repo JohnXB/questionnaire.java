@@ -23,7 +23,16 @@ public class Questionnaire {
     private Date updateAt;
 
     private Boolean template;
+    private int questionCount;
     private List<Question> questions;
+
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
+    }
 
     public Questionnaire(Integer id, String title, Date createAt, Integer status, String description, Integer classificationId, Integer creatorId, Boolean visible, Date updateAt, Boolean template) {
         this.id = id;

@@ -3,11 +3,21 @@ package com.johnxb.questionnaire.dto.Questionnaire;
 import java.util.List;
 
 public class QuestionnaireA03DTO {
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     private String creatorName;
     private String title;
     private String description;
 
     private List<QuestionDTO> questions;
+
 
     public String getTitle() {
         return title;

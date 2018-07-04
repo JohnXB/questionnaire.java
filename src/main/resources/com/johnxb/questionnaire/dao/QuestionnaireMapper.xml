@@ -10,13 +10,14 @@
         <result property="createAt" column="create_at"/>
         <result property="creatorId" column="creator_id"/>
         <result property="creatorName" column="creator_name"/>
+        <result property="questionCount" column="question_count"/>
         <result property="visible" column="visible"/>
         <result property="updateAt" column="update_at"/>
         <result property="template" column="template"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from questionnaire
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} AND creator_id = #{user_id}
   </delete>
     <insert id="insert" parameterType="com.johnxb.questionnaire.entity.Questionnaire">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -52,16 +53,19 @@
         and template = 0
     </select>
     <select id="seleteByClassificationId" resultMap="BaseResultMap">
-        SELECT ques.id, ques.title, ques.create_at, ques.status, ques.description,auth_user.username creator_name,COUNT(question.id)
-    FROM questionnaire ques,auth_user,question
-    WHERE visible = 1 AND auth_user.id = creator_id
+        SELECT ques.id, ques.title, ques.create_at, ques.status, ques.description,a.username
+        creator_name,COUNT(q.id) question_count
+        FROM questionnaire ques
+        LEFT JOIN auth_user a on a.id = ques.creator_id
+        LEFT join question q on q.questionnaire_id =ques.id
+        WHERE visible = 1
         <if test="classification_id != null">
             AND ques.classification_id = #{classification_id}
         </if>
         <if test="classification_id == null">
             AND ques.classification_id is null
         </if>
-        AND question.questionnaire_id =ques.id
+        GROUP BY ques.id
     </select>
 
 
@@ -84,5 +88,26 @@
     ques.visible, ques.update_at, ques.template,auth_user.username creator_name
     from questionnaire ques,auth_user
     where ques.id = #{id} AND auth_user.id = ques.creator_id
+    and visible = 1
     </select>
+    <select id="check" parameterType="java.lang.Integer">
+        SELECT COUNT(id)
+        FROM questionnaire
+        WHERE id=#{id} AND creator_id = #{user_id}
+    </select>
+    <update id="changeByPrimaryKey">
+        UPDATE questionnaire
+        set visible = #{visible}
+        WHERE id = #{id} AND creator_id = #{user_id}
+    </update>
+    <select id="seleteByUserId" resultMap="BaseResultMap">
+        SELECT ques.id, ques.title, ques.create_at,  ques.description,a.username creator_name,
+        ques.visible,COUNT(q.id) question_count
+        FROM questionnaire ques
+        LEFT JOIN auth_user a on a.id = ques.creator_id
+        LEFT join question q on q.questionnaire_id = ques.id
+        WHERE ques.creator_id = #{user_id}
+          GROUP BY ques.id
+    </select>
+
 </mapper>

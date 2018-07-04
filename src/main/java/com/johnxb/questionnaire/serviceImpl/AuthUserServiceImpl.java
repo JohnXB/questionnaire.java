@@ -54,7 +54,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     }
 
-    public String signIn(AuthUser user) {
+    public AuthUser signIn(AuthUser user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String pass = user.getPassword();
 
@@ -63,7 +63,8 @@ public class AuthUserServiceImpl implements AuthUserService {
             return null;
         }
         if (encoder.matches(pass, user.getPassword())) {
-            return generateToken(user);
+            user.setCurrentToken(generateToken(user));
+            return user;
         }
         return null;
     }

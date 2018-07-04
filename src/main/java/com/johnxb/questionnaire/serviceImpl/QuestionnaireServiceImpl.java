@@ -58,6 +58,30 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     public Questionnaire getQuestionnaireById(int id) {
-      return this.questionnaireMapper.selectById(id);
+        return this.questionnaireMapper.selectById(id);
     }
+
+
+    public String checkQuestionnaire(int id, int user_id,boolean visible) {
+        if(this.questionnaireMapper.check(id,user_id) <= 0)
+            return "该问卷不是您创建，不能改变状态";
+        try {
+            this.questionnaireMapper.changeByPrimaryKey(id, user_id,visible);
+            return "改变状态成功";
+        }catch (Exception e){
+            return  "改变状态失败";
+        }
+
+    }
+    public String deleteQuestionnaire(int id, int user_id) {
+        if(this.questionnaireMapper.check(id,user_id) <= 0)
+            return "该问卷不是您创建，不能删除";
+        if(this.questionnaireMapper.deleteByPrimaryKey(id, user_id)> 0){
+            return "删除成功";
+        }
+        return  "删除失败";
+    }
+   public List<Questionnaire> getUserQuestionnaire(int user_id){
+        return this.questionnaireMapper.seleteByUserId(user_id);
+   }
 }

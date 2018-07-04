@@ -3,6 +3,15 @@ package com.johnxb.questionnaire.dto.Questionnaire;
 import java.util.List;
 
 public class QuestionDTO {
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     private Integer type;
     private String description;
     private List<OptionDTO> options;

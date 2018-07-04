@@ -8,4 +8,7 @@ public interface QuestionnaireService {
    List<Questionnaire> getByParentId(Integer classification_id);
    boolean createQuestionnaire(Questionnaire questionnaire,int user_id);
    Questionnaire getQuestionnaireById(int id);
+   String checkQuestionnaire(int id,int user_id,boolean visible);
+   String deleteQuestionnaire(int id,int user_id);
+   List<Questionnaire> getUserQuestionnaire(int user_id);
 }

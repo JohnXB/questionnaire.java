@@ -61,7 +61,7 @@
         WHERE username = #{username,jdbcType=VARCHAR}
     </select>
     <select id="selectByUsername" resultMap="BaseResultMap">
-        select id, name, mail, password, avatar, register_at, gender, phone, current_token
+        select id, name,username, mail, password, avatar, register_at, gender, phone, current_token
         from auth_user
         where username = #{username}
     </select>

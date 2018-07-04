@@ -1,6 +1,7 @@
 package com.johnxb.questionnaire.api;
 
 import com.johnxb.questionnaire.dto.Questionnaire.*;
+import com.johnxb.questionnaire.dto.RequestDTO;
 import com.johnxb.questionnaire.entity.Question;
 import com.johnxb.questionnaire.entity.Questionnaire;
 import com.johnxb.questionnaire.service.ClassificationService;
@@ -74,9 +75,15 @@ public class QuestionnaireController {
     }
 
     @ApiOperation("关闭问卷")
-    @RequestMapping(method = RequestMethod.GET, value = "/A04")
-    public JSONResult A04() {
+    @RequestMapping(method = RequestMethod.POST, value = "/A04")
+    public JSONResult A04(@Valid QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
+        if (!currentUser.isUser(input.getToken())) {
+            jsonResult.setMessage("该功能需要用户权限！");
+            return jsonResult;
+        }
+       String message =  questionnaireService.checkQuestionnaire(input.getId(),currentUser.getUserId(input.getToken()),false);
+        jsonResult.setMessage(message);
         return jsonResult;
     }
 
@@ -89,8 +96,14 @@ public class QuestionnaireController {
 
     @ApiOperation("删除问卷")
     @RequestMapping(method = RequestMethod.DELETE, value = "/A06")
-    public JSONResult A06() {
+    public JSONResult A06(@Valid QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
+        if (!currentUser.isUser(input.getToken())) {
+            jsonResult.setMessage("该功能需要用户权限！");
+            return jsonResult;
+        }
+        String message = questionnaireService.deleteQuestionnaire(input.getId(),currentUser.getUserId(input.getToken()));
+        jsonResult.setMessage(message);
         return jsonResult;
     }
 
@@ -109,8 +122,27 @@ public class QuestionnaireController {
     }
     @ApiOperation("获取用户问卷")
     @RequestMapping(method = RequestMethod.POST, value = "/A09")
-    public JSONResult A09() {
+    public JSONResult A09(@Valid RequestDTO input) {
+        JSONResult<List<QuestionnaireA09DTO>> jsonResult = new JSONResult<>();
+        List<Questionnaire> questionnaireList = this.questionnaireService.getUserQuestionnaire(currentUser.getUserId(input.getToken()));
+        if (questionnaireList.size() == 1 && null == questionnaireList.get(0) || questionnaireList.size() == 0) {
+            jsonResult.setData(new ArrayList<>());
+            return jsonResult;
+        }
+        List<QuestionnaireA09DTO> questionnaireA09DTOList = BeanMapper.mapList(questionnaireList, QuestionnaireA09DTO.class);
+        jsonResult.setData(questionnaireA09DTOList);
+        return jsonResult;
+    }
+    @ApiOperation("打开问卷")
+    @RequestMapping(method = RequestMethod.POST, value = "/A10")
+    public JSONResult A10(@Valid QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
+        if (!currentUser.isUser(input.getToken())) {
+            jsonResult.setMessage("该功能需要用户权限！");
+            return jsonResult;
+        }
+        String message =  questionnaireService.checkQuestionnaire(input.getId(),currentUser.getUserId(input.getToken()),true);
+        jsonResult.setMessage(message);
         return jsonResult;
     }
 }
