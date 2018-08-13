@@ -26,17 +26,29 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    /**
+     * 从token中获取username
+     *
+     * @param token
+     * @return
+     */
     public String getUsernameFromToken(String token) {
         String username;
         try {
             final Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
+            username = (String) claims.get("username");
         } catch (Exception e) {
             username = null;
         }
         return username;
     }
 
+    /**
+     * 从token中获取创建时间
+     *
+     * @param token
+     * @return
+     */
     public Date getCreatedDateFromToken(String token) {
         Date create;
         try {
@@ -48,6 +60,12 @@ public class JwtTokenUtil implements Serializable {
         return create;
     }
 
+    /**
+     * 获取token的过期时间
+     *
+     * @param token
+     * @return
+     */
     public Date getExpirationDateFromToken(String token) {
         Date expiration;
         try {
@@ -59,6 +77,12 @@ public class JwtTokenUtil implements Serializable {
         return expiration;
     }
 
+    /**
+     * 从token中获取claims
+     *
+     * @param token
+     * @return
+     */
     private Claims getClaimsFromToken(String token) {
         Claims claims;
         try {
@@ -72,17 +96,33 @@ public class JwtTokenUtil implements Serializable {
         return claims;
     }
 
+    /**
+     * 生成token的过期时间
+     *
+     * @return
+     */
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
+        return new Date(System.currentTimeMillis() + expiration * 60 * 60 * 1000);
     }
 
+    /**
+     * 判断token是否过期
+     *
+     * @param token
+     * @return
+     */
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
 
-
+    /**
+     * 生成token
+     *
+     * @param userDetails
+     * @return
+     */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(username, userDetails.getUsername());
@@ -94,19 +134,54 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
+    /**
+     * token 是否可刷新
+     *
+     * @param token
+     * @return
+     */
+    public Boolean canTokenBeRefreshed(String token) {
+        final Date created = getCreatedDateFromToken(token);
+        return !isTokenExpired(token);
+    }
 
+    /**
+     * 刷新token
+     *
+     * @param token
+     * @return
+     */
+    public String refreshToken(String token) {
+        String refreshedToken;
+        try {
+            final Claims claims = getClaimsFromToken(token);
+            claims.put(created, new Date());
+            refreshedToken = generateToken(claims);
+        } catch (Exception e) {
+            refreshedToken = null;
+        }
+        return refreshedToken;
+    }
 
+    /**
+     * 验证token
+     *
+     * @param token
+     * @param userDetails
+     * @return
+     */
     public Boolean validateToken(String token, UserDetails userDetails) {
         JwtUser user = (JwtUser) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getCreatedDateFromToken(token);
-        //final Date expiration = getExpirationDateFromToken(token);
-        return (
+        Boolean result = (
                 username.equals(user.getUsername())
-                        && !isTokenExpired(token));
+                        && !isTokenExpired(token)
+        );
+        return result;
     }
 }

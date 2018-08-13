@@ -77,7 +77,7 @@ public class QuestionnaireController {
 
     @ApiOperation("关闭问卷")
     @RequestMapping(method = RequestMethod.POST, value = "/A04")
-    public JSONResult A04(@Valid QuestionnaireA04InputDTO input) {
+    public JSONResult A04(@Valid @RequestBody QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
         if (!currentUser.isUser(input.getToken())) {
             jsonResult.setMessage("该功能需要用户权限！");
@@ -96,8 +96,8 @@ public class QuestionnaireController {
     }
 
     @ApiOperation("删除问卷")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/A06")
-    public JSONResult A06(@Valid QuestionnaireA04InputDTO input) {
+    @RequestMapping(method = RequestMethod.POST, value = "/A06")
+    public JSONResult A06(@Valid @RequestBody QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
         if (!currentUser.isUser(input.getToken())) {
             jsonResult.setMessage("该功能需要用户权限！");
@@ -143,7 +143,7 @@ public class QuestionnaireController {
     }
     @ApiOperation("获取用户问卷")
     @RequestMapping(method = RequestMethod.POST, value = "/A09")
-    public JSONResult A09(@Valid RequestDTO input) {
+    public JSONResult A09(@Valid @RequestBody RequestDTO input) {
         JSONResult<List<QuestionnaireA09DTO>> jsonResult = new JSONResult<>();
         List<Questionnaire> questionnaireList = this.questionnaireService.getUserQuestionnaire(currentUser.getUserId(input.getToken()));
         if (questionnaireList.size() == 1 && null == questionnaireList.get(0) || questionnaireList.size() == 0) {
@@ -156,7 +156,7 @@ public class QuestionnaireController {
     }
     @ApiOperation("打开问卷")
     @RequestMapping(method = RequestMethod.POST, value = "/A10")
-    public JSONResult A10(@Valid QuestionnaireA04InputDTO input) {
+    public JSONResult A10(@Valid @RequestBody QuestionnaireA04InputDTO input) {
         JSONResult jsonResult = new JSONResult();
         if (!currentUser.isUser(input.getToken())) {
             jsonResult.setMessage("该功能需要用户权限！");

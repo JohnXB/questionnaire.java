@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +24,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     // Spring会自动寻找同样类型的具体类注入，这里就是JwtUserDetailsServiceImpl了
     @Autowired
     private UserDetailsService userDetailsService;
+
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
         return new JwtAuthenticationTokenFilter();
@@ -37,6 +39,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 // 使用BCrypt进行密码的hash
                 .passwordEncoder(passwordEncoder());
     }
+
     // 装载BCrypt密码编码器
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,7 +60,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("**").permitAll()
                 .anyRequest().fullyAuthenticated()
-                .and().csrf().disable(); httpSecurity
+                .and().csrf().disable();
+        httpSecurity
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 //                // 除上面外的所有请求全部需要鉴权认证
 //                .anyRequest().authenticated();

@@ -90,7 +90,7 @@
     where ques.id = #{id} AND auth_user.id = ques.creator_id
     and visible = 1
     </select>
-    <select id="check" parameterType="java.lang.Integer">
+    <select id="check" resultType="java.lang.Integer">
         SELECT COUNT(id)
         FROM questionnaire
         WHERE id=#{id} AND creator_id = #{user_id}
