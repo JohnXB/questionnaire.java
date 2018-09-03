@@ -1,10 +1,6 @@
 jwt:
   header: Authorization
-  secret: mySecret
+  secret: w-oasis123456
   expiration: 604800
   tokenHead: "Bearer "
-  route:
-    authentication:
-      path: auth
-      refresh: refresh
-      register: "auth/register"
+  exceptUrl: "/**"
